@@ -24,13 +24,7 @@
     .grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
     @media(max-width:900px){.grid{grid-template-columns:1fr}}
 
-    .card{
-      background:var(--panel);
-      border:1px solid var(--border);
-      border-radius:var(--r);
-      padding:16px;
-    }
-
+    .card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);padding:16px}
     h2{margin:0 0 10px;font-size:16px;font-weight:600}
 
     textarea,select,button,input{
@@ -41,7 +35,6 @@
       font:14px var(--mono);
       color:var(--text);
     }
-
     textarea{min-height:200px;resize:vertical;background:#fff}
     select,button,input{background:var(--panel2)}
 
@@ -49,84 +42,29 @@
     .row>*{flex:1}
 
     .out{
-      background:#fff;
-      border:1px solid var(--border);
-      border-radius:var(--r);
-      padding:12px;
-      min-height:200px;
-      overflow:auto;
-      font-size:1.3em
+      background:#fff;border:1px solid var(--border);border-radius:var(--r);
+      padding:12px;min-height:200px;overflow:auto;font-size:1.3em
     }
-
     .err{
-      margin-top:10px;
-      padding:10px 12px;
-      border-radius:var(--r);
-      border:1px solid var(--border);
-      background:var(--panel2);
-      font:12px var(--mono);
-      color:#3a1f1f;
-      white-space:pre-wrap;
-      display:none
+      margin-top:10px;padding:10px 12px;border-radius:var(--r);border:1px solid var(--border);
+      background:var(--panel2);font:12px var(--mono);color:#3a1f1f;white-space:pre-wrap;display:none
     }
 
-    .help{
-      margin-top:12px;
-      padding:12px;
-      background:#ececec;
-      border:1px solid var(--border);
-      border-radius:var(--r);
-      font:12px var(--mono)
-    }
+    .help{margin-top:12px;padding:12px;background:#ececec;border:1px solid var(--border);border-radius:var(--r);font:12px var(--mono)}
     .help b{display:block;font-weight:600;font-size:13px;margin-bottom:6px}
-    .help-search{
-      height:30px;
-      padding:6px 8px;
-      border-radius:4px;
-      border:1px solid var(--border);
-      background:#fff;
-      margin:6px 0 10px
-    }
-    .help-stack{
-      position:relative;
-      min-height:170px;
-      border:1px solid #c8c8c8;
-      background:#f3f3f3;
-      border-radius:4px;
-      padding:6px
-    }
+    .help-search{height:30px;padding:6px 8px;border-radius:4px;border:1px solid var(--border);background:#fff;margin:6px 0 10px}
+    .help-stack{position:relative;min-height:170px;border:1px solid #c8c8c8;background:#f3f3f3;border-radius:4px;padding:6px}
     .help-pane{display:flex;flex-direction:column;gap:4px}
-    .help-pane.overlay{
-      position:absolute;
-      inset:6px;
-      border-radius:4px;
-      background:#f3f3f3;
-      overflow:auto
-    }
+    .help-pane.overlay{position:absolute;inset:6px;border-radius:4px;background:#f3f3f3;overflow:auto}
     .help-item{padding:3px 6px;border-radius:4px;cursor:pointer}
     .help-item:hover{background:#dddddd}
-    .help-overlay-title{
-      padding:3px 6px 6px;
-      border-bottom:1px solid #d0d0d0;
-      margin-bottom:4px;
-      position:sticky;
-      top:0;
-      background:#f3f3f3
-    }
+    .help-overlay-title{padding:3px 6px 6px;border-bottom:1px solid #d0d0d0;margin-bottom:4px;position:sticky;top:0;background:#f3f3f3}
     .help-status{color:#666;padding:6px}
 
     .docbar{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      padding:10px 12px;
-      margin-top:14px;
-      background:var(--panel);
-      border:1px solid var(--border);
-      border-radius:var(--r);
-      font:13px var(--mono);
-      overflow:auto;
-      white-space:nowrap;
+      display:flex;align-items:center;gap:12px;padding:10px 12px;margin-top:14px;
+      background:var(--panel);border:1px solid var(--border);border-radius:var(--r);
+      font:13px var(--mono);overflow:auto;white-space:nowrap;
     }
     .docbar a{color:inherit;text-decoration:underline}
     .docbar .sep{opacity:.6}
@@ -134,14 +72,9 @@
     .fieldwrap{position:relative;padding-top:14px}
 
     .clipbtn{
-      position:absolute;
-      top:-30px;
-      right:8px;
-      width:36px;
-      height:36px;
-      padding:0;
-      display:grid;
-      place-items:center;
+      position:absolute;top:-30px;right:8px;
+      width:36px;height:36px;padding:0;
+      display:grid;place-items:center;
       border:1px solid var(--border);
       border-radius:10px;
       background:var(--panel2);
@@ -167,7 +100,6 @@
             <path d="M20 8h-6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2Z"/>
           </svg>
         </button>
-
         <textarea id="src">\frac{a^2+b^2}{c}</textarea>
       </div>
 
@@ -235,16 +167,20 @@
 document.addEventListener("DOMContentLoaded", () => {
   const src=document.getElementById("src"),out=document.getElementById("out"),err=document.getElementById("err"),
         mode=document.getElementById("mode"),clearBtn=document.getElementById("clear");
-  let t=0;
 
+  function showErr(msg){
+    err.style.display="block";
+    err.textContent=String(msg);
+  }
+
+  let t=0;
   function renderNow(){
     err.style.display="none";
     try{
       katex.render(src.value,out,{displayMode:mode.value==="display",throwOnError:true,trust:false});
     }catch(e){
       out.textContent="";
-      err.style.display="block";
-      err.textContent=String(e);
+      showErr(e);
     }
   }
 
@@ -313,85 +249,74 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if("serviceWorker"in navigator)navigator.serviceWorker.register("./sw.js");
 
-  document.getElementById("copyInput").onclick=()=>navigator.clipboard.writeText(src.value);
+  document.getElementById("copyInput").onclick = async () => {
+    err.style.display="none";
+    try{
+      await navigator.clipboard.writeText(src.value);
+    }catch(e){
+      showErr(e);
+    }
+  };
 
-  function forceSvgPxSize(svgText, pxW, pxH){
-    const w = Math.max(1, Math.round(pxW));
-    const h = Math.max(1, Math.round(pxH));
-    if(svgText.indexOf("<svg") === -1) return svgText;
-    svgText = svgText.replace(/<svg\b([^>]*)>/, (m, a) => {
-      let attrs = a;
-
-      if(!/\bxmlns=/.test(attrs)) attrs += ' xmlns="http://www.w3.org/2000/svg"';
-      if(!/\bxmlns:xlink=/.test(attrs)) attrs += ' xmlns:xlink="http://www.w3.org/1999/xlink"';
-
-      if(/\bwidth=/.test(attrs)) attrs = attrs.replace(/\bwidth="[^"]*"/, `width="${w}"`);
-      else attrs += ` width="${w}"`;
-
-      if(/\bheight=/.test(attrs)) attrs = attrs.replace(/\bheight="[^"]*"/, `height="${h}"`);
-      else attrs += ` height="${h}"`;
-
-      return `<svg${attrs}>`;
+  function katexSvgOnly(tex, displayMode){
+    const html = katex.renderToString(tex, {
+      displayMode,
+      output: "svg",
+      throwOnError: true,
+      trust: false
     });
-    return svgText;
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    const svg = doc.querySelector("svg");
+    if(!svg) throw new Error("KaTeX SVG not found");
+    if(!svg.getAttribute("xmlns")) svg.setAttribute("xmlns","http://www.w3.org/2000/svg");
+    return new XMLSerializer().serializeToString(svg);
   }
 
-  function svgToPngBlob(svgText, scale){
-    return new Promise((resolve, reject) => {
-      const blob = new Blob([svgText], { type: "image/svg+xml" });
-      const url = URL.createObjectURL(blob);
+  async function svgTextToPngBlob(svgText, scale){
+    const svgBlob = new Blob([svgText], { type: "image/svg+xml" });
+    const url = URL.createObjectURL(svgBlob);
+    try{
       const img = new Image();
+      await new Promise((res, rej) => { img.onload=res; img.onerror=rej; img.src=url; });
 
-      img.onload = () => {
-        try{
-          const w = Math.max(1, img.naturalWidth || img.width || 1);
-          const h = Math.max(1, img.naturalHeight || img.height || 1);
-          const s = Math.max(1, scale);
+      const w = Math.max(1, img.naturalWidth || img.width || 1);
+      const h = Math.max(1, img.naturalHeight || img.height || 1);
+      const s = Math.max(1, scale);
 
-          const canvas = document.createElement("canvas");
-          canvas.width = w * s;
-          canvas.height = h * s;
+      const canvas = document.createElement("canvas");
+      canvas.width = w * s;
+      canvas.height = h * s;
 
-          const ctx = canvas.getContext("2d");
-          ctx.setTransform(s,0,0,s,0,0);
-          ctx.fillStyle = "#fff";
-          ctx.fillRect(0,0,w,h);
-          ctx.drawImage(img,0,0);
+      const ctx = canvas.getContext("2d");
+      ctx.setTransform(s,0,0,s,0,0);
+      ctx.fillStyle = "#fff";
+      ctx.fillRect(0,0,w,h);
+      ctx.drawImage(img,0,0);
 
-          URL.revokeObjectURL(url);
-          canvas.toBlob(b => b ? resolve(b) : reject(new Error("toBlob failed")), "image/png");
-        }catch(e){
-          URL.revokeObjectURL(url);
-          reject(e);
-        }
-      };
-
-      img.onerror = (e) => { URL.revokeObjectURL(url); reject(e); };
-      img.src = url;
-    });
+      return await new Promise((resolve, reject) => {
+        canvas.toBlob(b => b ? resolve(b) : reject(new Error("toBlob failed")), "image/png");
+      });
+    } finally {
+      URL.revokeObjectURL(url);
+    }
   }
 
   document.getElementById("copyOutput").onclick = async () => {
-    if(err.style.display==="block") return;
-
-    let svg="";
+    err.style.display="none";
     try{
-      svg = katex.renderToString(src.value,{
-        displayMode:mode.value==="display",
-        output:"svg",
-        throwOnError:true,
-        trust:false
-      });
-    }catch(e){ return; }
+      if(err.style.display==="block") return;
 
-    const r = out.getBoundingClientRect();
-    svg = forceSvgPxSize(svg, r.width, r.height);
-
-    try{
+      const svgText = katexSvgOnly(src.value, mode.value==="display");
       const scale = Math.ceil(window.devicePixelRatio || 2);
-      const pngBlob = await svgToPngBlob(svg, scale);
+      const pngBlob = await svgTextToPngBlob(svgText, scale);
+
+      if(!(navigator.clipboard && navigator.clipboard.write && window.ClipboardItem))
+        throw new Error("Clipboard PNG write unsupported (need HTTPS + Chromium)");
+
       await navigator.clipboard.write([new ClipboardItem({ "image/png": pngBlob })]);
-    }catch(e){}
+    } catch(e){
+      showErr(e);
+    }
   };
 
   renderNow();
