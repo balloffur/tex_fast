@@ -222,7 +222,7 @@
       <h2>Output</h2>
 
       <div class="fieldwrap">
-        <button id="copyOutput" class="clipbtn" type="button" aria-label="Copy PNG">
+        <button id="copyOutput" class="clipbtn" type="button" aria-label="Copy SVG">
           <svg viewBox="0 0 24 24" class="clipicon">
             <path d="M16 4h-1.18A3 3 0 0 0 12 2a3 3 0 0 0-2.82 2H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1h-2v1H8V6h1.18A3 3 0 0 0 12 8a3 3 0 0 0 2.82-2H16v3h2V6a2 2 0 0 0-2-2Z"/>
             <path d="M20 8h-6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2Z"/>
@@ -247,7 +247,6 @@
 
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/mhchem.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.min.js"></script>
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
@@ -333,10 +332,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("copyInput").onclick=()=>navigator.clipboard.writeText(src.value);
 
+  async function copySvgToClipboard(svgText){
+    const svgBlob=new Blob([svgText],{type:"image/svg+xml"});
+    try{
+      await navigator.clipboard.write([new ClipboardItem({"image/svg+xml":svgBlob})]);
+    }catch(e){
+      await navigator.clipboard.writeText(svgText);
+    }
+  }
+
   document.getElementById("copyOutput").onclick=async()=>{
     if(err.style.display==="block")return;
-    const blob=await htmlToImage.toBlob(out,{backgroundColor:"#fff"});
-    if(blob)await navigator.clipboard.write([new ClipboardItem({"image/png":blob})]);
+    let svg="";
+    try{
+      svg=katex.renderToString(src.value,{
+        displayMode:mode.value==="display",
+        output:"svg",
+        throwOnError:true,
+        trust:false
+      });
+    }catch(e){return}
+    await copySvgToClipboard(svg);
   };
 
   renderNow();
