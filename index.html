@@ -80,14 +80,16 @@
       background:var(--panel2);
       cursor:pointer;
       z-index:2;
+      user-select:none;
     }
     .clipbtn:hover{background:#fff}
     .clipbtn:active{transform:translateY(1px)}
     .clipicon{width:20px;height:20px;fill:currentColor;opacity:.85}
 
     .acbtn{right:52px}
-    .acbtn.on{background:#fff}
-    .acbtn.off{opacity:.55}
+    .acbtn.on{background:#e8f2ff}
+    .acbtn.off{background:var(--panel2)}
+    .acbtn.off .clipicon{opacity:.45}
 
     /* Autocomplete */
     .ac{
@@ -120,16 +122,17 @@
       <h2>Input</h2>
 
       <div class="fieldwrap">
+        <button id="toggleAC" class="clipbtn acbtn on" type="button" aria-label="Toggle autocomplete">
+          <svg viewBox="0 0 24 24" class="clipicon" aria-hidden="true">
+            <path d="M6 7h14M6 12h10M6 17h8" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path d="M3.5 7h.01M3.5 12h.01M3.5 17h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </button>
+
         <button id="copyInput" class="clipbtn" type="button" aria-label="Copy TeX">
           <svg viewBox="0 0 24 24" class="clipicon" aria-hidden="true">
             <path d="M16 4h-1.18A3 3 0 0 0 12 2a3 3 0 0 0-2.82 2H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1h-2v1H8V6h1.18A3 3 0 0 0 12 8a3 3 0 0 0 2.82-2H16v3h2V6a2 2 0 0 0-2-2Z"/>
             <path d="M20 8h-6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2Z"/>
-          </svg>
-        </button>
-
-        <button id="toggleAc" class="clipbtn acbtn" type="button" aria-label="Toggle autocomplete">
-          <svg viewBox="0 0 24 24" class="clipicon" aria-hidden="true">
-            <path d="M3 17h2l1-3h6l1 3h2L9.5 4h-2L3 17zm3.6-5 2.4-7 2.4 7H6.6zM19 17h2v-7h-2v7zm0-9h2V6h-2v2z"/>
           </svg>
         </button>
 
@@ -195,17 +198,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const src=document.getElementById("src"),out=document.getElementById("out"),err=document.getElementById("err"),
         mode=document.getElementById("mode"),clearBtn=document.getElementById("clear");
-
-  const toggleAcBtn = document.getElementById("toggleAc");
-  let acEnabled = localStorage.getItem("texfast.acEnabled");
-  acEnabled = (acEnabled === null) ? true : (acEnabled === "1");
-
-  function paintAcBtn(){
-    toggleAcBtn.classList.toggle("on", acEnabled);
-    toggleAcBtn.classList.toggle("off", !acEnabled);
-    toggleAcBtn.title = acEnabled ? "Autocomplete: ON" : "Autocomplete: OFF";
-  }
-  paintAcBtn();
 
   function showErr(msg){
     err.style.display="block";
@@ -311,24 +303,33 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  toggleAcBtn.onclick = () => {
-    acEnabled = !acEnabled;
-    localStorage.setItem("texfast.acEnabled", acEnabled ? "1" : "0");
-    paintAcBtn();
-    if (window.TEXFAST_API) window.TEXFAST_API.acEnabled = acEnabled;
-    window.dispatchEvent(new Event("texfast:acToggle"));
-  };
-
   window.TEXFAST_API = {
-    acEnabled,
     getHelp: () => ({ loaded: helpLoaded, data: helpData }),
     insertTex,
     replaceRange,
     src,
     acEl: document.getElementById("ac"),
-    schedule
+    schedule,
+    acEnabled: true
   };
   window.dispatchEvent(new Event("texfast:apiReady"));
+
+  const acBtn = document.getElementById("toggleAC");
+  const AC_KEY = "texfast.autocomplete";
+
+  function setAC(on){
+    window.TEXFAST_API.acEnabled = !!on;
+    acBtn.classList.toggle("on", !!on);
+    acBtn.classList.toggle("off", !on);
+    try{ localStorage.setItem(AC_KEY, on ? "1" : "0"); }catch(_){}
+    window.dispatchEvent(new Event("texfast:acToggle"));
+  }
+
+  let initOn = true;
+  try{ initOn = localStorage.getItem(AC_KEY) !== "0"; }catch(_){}
+  setAC(initOn);
+
+  acBtn.onclick = () => setAC(!window.TEXFAST_API.acEnabled);
 
   renderNow();
 });
