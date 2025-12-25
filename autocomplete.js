@@ -1,5 +1,5 @@
 (() => {
-  const MAX = 7;
+  const MAX = 10;
 
   const norm = (s) => (s ?? "")
     .toString()
@@ -10,31 +10,18 @@
 
   const normNoSpace = (s) => norm(s).replace(/\s+/g, "");
 
-  function waitAPI(cb){
-    const t0 = performance.now();
-    const timer = setInterval(() => {
-      const api = window.TEXFAST_API;
-      if (api && api.src && api.acEl && api.getHelp) {
-        clearInterval(timer);
-        cb(api);
-      } else if (performance.now() - t0 > 5000) {
-        clearInterval(timer);
-      }
-    }, 20);
-  }
-
   function tokenAt(text, caret){
     const s = Math.max(0, Math.min(caret, text.length));
     let i = s;
     while (i > 0) {
       const c = text.charCodeAt(i - 1);
-      if (c === 10 || c === 13 || c === 9 || c === 32) break;           // whitespace
-      if (c === 44 || c === 59) break;                                   // , ;
-      if (c === 40 || c === 41) break;                                   // ( )
-      if (c === 91 || c === 93) break;                                   // [ ]
-      if (c === 123 || c === 125) break;                                 // { }
-      if (c === 60 || c === 62) break;                                   // < >
-      if (c === 61) break;                                               // =
+      if (c === 10 || c === 13 || c === 9 || c === 32) break;
+      if (c === 44 || c === 59) break;
+      if (c === 40 || c === 41) break;
+      if (c === 91 || c === 93) break;
+      if (c === 123 || c === 125) break;
+      if (c === 60 || c === 62) break;
+      if (c === 61) break;
       i--;
     }
     const start = i;
@@ -103,10 +90,28 @@
     }
     scored.sort((a,b) => b[0] - a[0]);
     const out = [];
-    for (let k = 0; k < scored.length && out.length < MAX; k++) {
-      out.push(data[scored[k][1]]);
-    }
+    for (let k = 0; k < scored.length && out.length < MAX; k++) out.push(data[scored[k][1]]);
     return out;
+  }
+
+  function waitApi(cb){
+    const tryNow = () => {
+      const api = window.TEXFAST_API;
+      if (api && api.src && api.acEl && api.getHelp && api.replaceRange) { cb(api); return true; }
+      return false;
+    };
+    if (tryNow()) return;
+
+    const onReady = () => { if (tryNow()) window.removeEventListener("texfast:apiReady", onReady); };
+    window.addEventListener("texfast:apiReady", onReady);
+
+    let n = 0;
+    const timer = setInterval(() => {
+      if (tryNow() || ++n > 300) {
+        clearInterval(timer);
+        window.removeEventListener("texfast:apiReady", onReady);
+      }
+    }, 20);
   }
 
   function mount(api){
@@ -116,9 +121,9 @@
     let idx = null;
     let open = false;
     let sel = -1;
-    let lastSig = "";
     let lastRange = { start: 0, end: 0, tok: "" };
     let lastList = [];
+    let lastSig = "";
 
     function close(){
       open = false;
@@ -134,14 +139,13 @@
 
       const hint = document.createElement("div");
       hint.className = "ac-hint";
-      hint.textContent = "↑↓ выбрать • Enter вставить • Esc закрыть";
+      hint.textContent = "↑↓ выбрать • Enter/Tab вставить • Esc закрыть";
       box.appendChild(hint);
 
       for (let i = 0; i < list.length; i++) {
         const it = list[i];
         const row = document.createElement("div");
         row.className = "ac-row" + (i === sel ? " sel" : "");
-        row.dataset.i = String(i);
 
         const t = document.createElement("div");
         t.className = "ac-tex";
@@ -189,16 +193,13 @@
       if (!h.loaded || !Array.isArray(h.data) || !h.data.length) { close(); return; }
       if (!idx || idx.length !== h.data.length) idx = buildIndex(h.data);
 
+      if ((src.selectionStart ?? 0) !== (src.selectionEnd ?? 0)) { close(); return; }
+
       const caret = src.selectionStart ?? 0;
       const tr = tokenAt(src.value, caret);
 
-      const tok = tr.tok;
-      const q = tok.trim();
-
-      // Триггер: \команда или слово/ключ длиной >=2
-      const good =
-        (q.startsWith("\\") && q.length >= 2) ||
-        (!q.startsWith("\\") && q.length >= 2);
+      const q = tr.tok.trim();
+      const good = q.length >= 2;
 
       const sig = q + "|" + caret;
       if (sig === lastSig) return;
@@ -207,27 +208,26 @@
       if (!good) { close(); return; }
 
       lastRange = tr;
-
-      sel = -1;
+      sel = 0;
       lastList = suggest(q, h.data, idx);
       render(lastList);
     }
 
-    src.addEventListener("input", () => { update(); });
-    src.addEventListener("click", () => { update(); });
+    src.addEventListener("input", update);
+    src.addEventListener("click", update);
     src.addEventListener("keyup", (e) => {
       if (e.key === "ArrowLeft" || e.key === "ArrowRight" || e.key === "Home" || e.key === "End") update();
     });
 
     src.addEventListener("keydown", (e) => {
       if (!open) {
-        if (e.key === "ArrowDown" || e.key === "ArrowUp") { update(); }
+        if (e.key === "ArrowDown" || e.key === "ArrowUp") update();
       }
       if (!open) return;
 
       if (e.key === "ArrowDown") { e.preventDefault(); move(+1); return; }
       if (e.key === "ArrowUp")   { e.preventDefault(); move(-1); return; }
-      if (e.key === "Enter")     { e.preventDefault(); apply(sel >= 0 ? sel : 0); return; }
+      if (e.key === "Enter" || e.key === "Tab") { e.preventDefault(); apply(sel >= 0 ? sel : 0); return; }
       if (e.key === "Escape")    { e.preventDefault(); close(); return; }
     });
 
@@ -236,14 +236,13 @@
       close();
     });
 
-    // Показать подсказки сразу после загрузки help.json (когда пользователь уже печатает)
-    const poll = setInterval(() => {
-      const h = api.getHelp();
-      if (h.loaded) { clearInterval(poll); update(); }
-    }, 50);
+    const onHelp = () => update();
+    window.addEventListener("texfast:helpLoaded", onHelp);
+
+    update();
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    waitAPI((api) => mount(api));
+    waitApi((api) => mount(api));
   });
 })();
