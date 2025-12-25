@@ -89,8 +89,7 @@
     .ac{
       position:absolute;
       left:0; right:0;
-      top:14px;
-      transform:translateY(100%);
+      top:100%;
       margin-top:8px;
       background:#fff;
       border:1px solid var(--border);
@@ -101,11 +100,7 @@
       z-index:5;
       display:none;
     }
-    .ac-row{
-      padding:8px 10px;
-      border-radius:8px;
-      cursor:pointer;
-    }
+    .ac-row{padding:8px 10px;border-radius:8px;cursor:pointer}
     .ac-row:hover{background:#efefef}
     .ac-row.sel{background:rgba(0,0,0,.08)}
     .ac-tex{font:13px var(--mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -120,7 +115,7 @@
     <div class="card">
       <h2>Input</h2>
 
-      <div class="fieldwrap" id="srcWrap">
+      <div class="fieldwrap">
         <button id="copyInput" class="clipbtn" type="button" aria-label="Copy TeX">
           <svg viewBox="0 0 24 24" class="clipicon" aria-hidden="true">
             <path d="M16 4h-1.18A3 3 0 0 0 12 2a3 3 0 0 0-2.82 2H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1h-2v1H8V6h1.18A3 3 0 0 0 12 8a3 3 0 0 0 2.82-2H16v3h2V6a2 2 0 0 0-2-2Z"/>
@@ -129,7 +124,6 @@
         </button>
 
         <textarea id="src">\frac{a^2+b^2}{c}</textarea>
-
         <div id="ac" class="ac" aria-label="Autocomplete"></div>
       </div>
 
@@ -253,8 +247,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   fetch("./help.json", { cache: "force-cache" })
     .then(r=>r.json())
-    .then(d=>{helpData=Array.isArray(d)?d:[];helpLoaded=true})
-    .catch(()=>{helpLoaded=false});
+    .then(d=>{
+      helpData = Array.isArray(d) ? d : [];
+      helpLoaded = true;
+      window.dispatchEvent(new Event("texfast:helpLoaded"));
+    })
+    .catch(()=>{
+      helpLoaded = false;
+      window.dispatchEvent(new Event("texfast:helpLoaded"));
+    });
 
   function renderJson(q){
     const qq=q.trim().toLowerCase();
@@ -297,6 +298,7 @@ document.addEventListener("DOMContentLoaded", () => {
     acEl: document.getElementById("ac"),
     schedule
   };
+  window.dispatchEvent(new Event("texfast:apiReady"));
 
   renderNow();
 });
