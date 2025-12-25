@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>TeX Render</title>
 
+  <link rel="icon" href="./favicon.ico" sizes="any">
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 
   <style>
@@ -41,6 +45,8 @@
     .help-item:hover{background:#dddddd}
     .help-overlay-title{padding:3px 6px 6px;border-bottom:1px solid #d0d0d0;margin-bottom:4px;position:sticky;top:0;background:#f3f3f3}
     .help-status{color:#666;padding:6px}
+    .doc-links a{color:inherit}
+    .doc-links code{font-family:var(--mono)}
   </style>
 </head>
 <body>
@@ -81,6 +87,29 @@
       <div id="err" class="err"></div>
     </div>
   </div>
+
+  <div class="card doc-links" style="margin-top:14px">
+    <h2>Документация KaTeX</h2>
+    <div style="font-size:13px;line-height:1.5">
+      <div>
+        <a href="https://katex.org/docs/supported.html" target="_blank" rel="noopener">
+          KaTeX Supported Functions
+        </a>
+        <div style="color:#666">
+          Список того, что реально поддерживается в KaTeX (KaTeX ≠ LaTeX 100%).
+        </div>
+      </div>
+      <div style="margin-top:10px">
+        <a href="https://katex.org/docs/supported.html#mhchem" target="_blank" rel="noopener">
+          KaTeX mhchem
+        </a>
+        <div style="color:#666">
+          Синтаксис химии: <code>\ce{}</code>, реакции, ионы.
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
