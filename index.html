@@ -60,6 +60,20 @@
     }
     .docbar a{color:inherit;text-decoration:underline}
     .docbar .sep{opacity:.6}
+
+    .box{position:relative}
+    .clipbtn{
+      position:absolute;top:10px;right:10px;
+      width:36px;height:36px;padding:0;
+      display:grid;place-items:center;
+      border:1px solid var(--border);
+      border-radius:10px;
+      background:#ffffffcc;
+      cursor:pointer;
+    }
+    .clipbtn:hover{background:#fff}
+    .clipbtn:active{transform:translateY(1px)}
+    .clipicon{width:20px;height:20px;fill:currentColor;opacity:.85}
   </style>
 </head>
 <body>
@@ -67,7 +81,17 @@
   <div class="grid">
     <div class="card">
       <h2>Input</h2>
-      <textarea id="src">\frac{a^2+b^2}{c}</textarea>
+
+      <div class="box">
+        <button id="copyInput" class="clipbtn" type="button" aria-label="Copy TeX">
+          <svg viewBox="0 0 24 24" class="clipicon" aria-hidden="true">
+            <path d="M16 4h-1.18A3 3 0 0 0 12 2a3 3 0 0 0-2.82 2H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1h-2v1H8V6h1.18A3 3 0 0 0 12 8a3 3 0 0 0 2.82-2H16v3h2V6a2 2 0 0 0-2-2Zm-4 2a1 1 0 1 1 0-2a1 1 0 0 1 0 2Z"></path>
+            <path d="M20 8h-6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2Zm0 10h-6v-8h6v8Z"></path>
+          </svg>
+        </button>
+        <textarea id="src">\frac{a^2+b^2}{c}</textarea>
+      </div>
+
       <div class="row">
         <select id="mode"><option value="display">display</option><option value="inline">inline</option></select>
         <button id="clear">clear</button>
@@ -96,7 +120,17 @@
 
     <div class="card">
       <h2>Output</h2>
-      <div id="out" class="out"></div>
+
+      <div class="box">
+        <button id="copyOutput" class="clipbtn" type="button" aria-label="Copy PNG">
+          <svg viewBox="0 0 24 24" class="clipicon" aria-hidden="true">
+            <path d="M16 4h-1.18A3 3 0 0 0 12 2a3 3 0 0 0-2.82 2H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1h-2v1H8V6h1.18A3 3 0 0 0 12 8a3 3 0 0 0 2.82-2H16v3h2V6a2 2 0 0 0-2-2Zm-4 2a1 1 0 1 1 0-2a1 1 0 0 1 0 2Z"></path>
+            <path d="M20 8h-6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2Zm0 10h-6v-8h6v8Z"></path>
+          </svg>
+        </button>
+        <div id="out" class="out"></div>
+      </div>
+
       <div id="err" class="err"></div>
     </div>
   </div>
@@ -111,6 +145,7 @@
 
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/mhchem.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.min.js"></script>
 
 <script>
   const src=document.getElementById("src"),out=document.getElementById("out"),err=document.getElementById("err"),
@@ -123,7 +158,7 @@
       katex.render(src.value,out,{
         displayMode:mode.value==="display",
         throwOnError:true,
-        trust:true
+        trust:false
       });
     }catch(e){
       out.textContent="";
@@ -133,33 +168,85 @@
   }
 
   function schedule(){clearTimeout(t);t=setTimeout(renderNow,60)}
-  src.addEventListener("input",schedule);mode.addEventListener("change",renderNow);
-  clearBtn.addEventListener("click",()=>{src.value="";renderNow()});document.addEventListener("DOMContentLoaded",renderNow);
+  src.addEventListener("input",schedule);
+  mode.addEventListener("change",renderNow);
+  clearBtn.addEventListener("click",()=>{src.value="";renderNow()});
 
-  function insertTex(tex){const s=src.selectionStart,e=src.selectionEnd;src.value=src.value.slice(0,s)+tex+src.value.slice(e);
-    src.selectionStart=src.selectionEnd=s+tex.length;src.focus();schedule()}
+  function insertTex(tex){
+    const s=src.selectionStart,e=src.selectionEnd;
+    src.value=src.value.slice(0,s)+tex+src.value.slice(e);
+    src.selectionStart=src.selectionEnd=s+tex.length;
+    src.focus();
+    schedule();
+  }
   document.querySelectorAll("#helpBase .help-item").forEach(el=>el.onclick=()=>insertTex(el.dataset.tex||""));
 
   const helpSearch=document.getElementById("helpSearch"),helpBase=document.getElementById("helpBase"),
         helpOverlay=document.getElementById("helpOverlay"),helpResults=document.getElementById("helpResults");
   let helpData=[],helpLoaded=false;
+
   function setSearchMode(on){helpBase.style.visibility=on?"hidden":"visible";helpOverlay.style.display=on?"block":"none"}
-  function showStatus(t){helpResults.innerHTML="";const d=document.createElement("div");d.className="help-status";d.textContent=t;helpResults.appendChild(d)}
-  fetch("./help.json",{cache:"force-cache"}).then(r=>r.json()).then(d=>{helpData=Array.isArray(d)?d:[];helpLoaded=true})
+  function showStatus(t){
+    helpResults.innerHTML="";
+    const d=document.createElement("div");
+    d.className="help-status";
+    d.textContent=t;
+    helpResults.appendChild(d);
+  }
+
+  fetch("./help.json",{cache:"force-cache"})
+    .then(r=>r.json())
+    .then(d=>{helpData=Array.isArray(d)?d:[];helpLoaded=true})
     .catch(()=>{helpData=[];helpLoaded=false});
+
   function renderJson(q){
-    const qq=q.trim().toLowerCase();if(!qq){setSearchMode(false);return}
-    setSearchMode(true);if(!helpLoaded){showStatus("help.json не загружен");return}
-    helpResults.innerHTML="";let n=0;
+    const qq=q.trim().toLowerCase();
+    if(!qq){setSearchMode(false);return}
+    setSearchMode(true);
+    if(!helpLoaded){showStatus("help.json не загружен");return}
+    helpResults.innerHTML="";
+    let n=0;
     for(const it of helpData){
       const hay=((it.tex||"")+" "+(it.title||"")+" "+(it.keys||[]).join(" ")).toLowerCase();
       if(!hay.includes(qq))continue;
-      const d=document.createElement("div");d.className="help-item";d.textContent=(it.tex||"")+" — "+(it.title||"");
-      d.onclick=()=>insertTex(it.tex||"");helpResults.appendChild(d);if(++n>=120)break}
+      const d=document.createElement("div");
+      d.className="help-item";
+      d.textContent=(it.tex||"")+" — "+(it.title||"");
+      d.onclick=()=>insertTex(it.tex||"");
+      helpResults.appendChild(d);
+      if(++n>=120)break;
+    }
     if(!n)showStatus("Ничего не найдено");
   }
   helpSearch.addEventListener("input",e=>renderJson(e.target.value));
+
   if("serviceWorker"in navigator)navigator.serviceWorker.register("./sw.js");
+
+  const copyInputBtn=document.getElementById("copyInput");
+  const copyOutputBtn=document.getElementById("copyOutput");
+
+  async function copyTextToClipboard(s){
+    await navigator.clipboard.writeText(s);
+  }
+
+  async function copyNodeAsPngToClipboard(node){
+    const blob=await htmlToImage.toBlob(node,{backgroundColor:"#ffffff"});
+    if(!blob) throw new Error("toBlob failed");
+    await navigator.clipboard.write([new ClipboardItem({"image/png":blob})]);
+  }
+
+  copyInputBtn.addEventListener("click",async()=>{
+    try{await copyTextToClipboard(src.value)}catch(e){}
+  });
+
+  copyOutputBtn.addEventListener("click",async()=>{
+    try{
+      if(err.style.display==="block") return;
+      await copyNodeAsPngToClipboard(out);
+    }catch(e){}
+  });
+
+  renderNow();
 </script>
 </body>
 </html>
