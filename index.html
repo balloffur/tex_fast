@@ -42,12 +42,7 @@
       color:var(--text);
     }
 
-    textarea{
-      min-height:200px;
-      resize:vertical;
-      background:#fff;
-    }
-
+    textarea{min-height:200px;resize:vertical;background:#fff}
     select,button,input{background:var(--panel2)}
 
     .row{display:flex;gap:10px;margin-top:10px}
@@ -83,9 +78,7 @@
       border-radius:var(--r);
       font:12px var(--mono)
     }
-
     .help b{display:block;font-weight:600;font-size:13px;margin-bottom:6px}
-
     .help-search{
       height:30px;
       padding:6px 8px;
@@ -94,7 +87,6 @@
       background:#fff;
       margin:6px 0 10px
     }
-
     .help-stack{
       position:relative;
       min-height:170px;
@@ -103,7 +95,6 @@
       border-radius:4px;
       padding:6px
     }
-
     .help-pane{display:flex;flex-direction:column;gap:4px}
     .help-pane.overlay{
       position:absolute;
@@ -112,10 +103,8 @@
       background:#f3f3f3;
       overflow:auto
     }
-
     .help-item{padding:3px 6px;border-radius:4px;cursor:pointer}
     .help-item:hover{background:#dddddd}
-
     .help-overlay-title{
       padding:3px 6px 6px;
       border-bottom:1px solid #d0d0d0;
@@ -124,7 +113,6 @@
       top:0;
       background:#f3f3f3
     }
-
     .help-status{color:#666;padding:6px}
 
     .docbar{
@@ -140,14 +128,10 @@
       overflow:auto;
       white-space:nowrap;
     }
-
     .docbar a{color:inherit;text-decoration:underline}
     .docbar .sep{opacity:.6}
 
-    .fieldwrap{
-      position:relative;
-      padding-top:14px;
-    }
+    .fieldwrap{position:relative;padding-top:14px}
 
     .clipbtn{
       position:absolute;
@@ -164,7 +148,6 @@
       cursor:pointer;
       z-index:2;
     }
-
     .clipbtn:hover{background:#fff}
     .clipbtn:active{transform:translateY(1px)}
     .clipicon{width:20px;height:20px;fill:currentColor;opacity:.85}
@@ -179,7 +162,7 @@
 
       <div class="fieldwrap">
         <button id="copyInput" class="clipbtn" type="button" aria-label="Copy TeX">
-          <svg viewBox="0 0 24 24" class="clipicon">
+          <svg viewBox="0 0 24 24" class="clipicon" aria-hidden="true">
             <path d="M16 4h-1.18A3 3 0 0 0 12 2a3 3 0 0 0-2.82 2H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1h-2v1H8V6h1.18A3 3 0 0 0 12 8a3 3 0 0 0 2.82-2H16v3h2V6a2 2 0 0 0-2-2Z"/>
             <path d="M20 8h-6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2Z"/>
           </svg>
@@ -222,8 +205,8 @@
       <h2>Output</h2>
 
       <div class="fieldwrap">
-        <button id="copyOutput" class="clipbtn" type="button" aria-label="Copy SVG">
-          <svg viewBox="0 0 24 24" class="clipicon">
+        <button id="copyOutput" class="clipbtn" type="button" aria-label="Copy PNG">
+          <svg viewBox="0 0 24 24" class="clipicon" aria-hidden="true">
             <path d="M16 4h-1.18A3 3 0 0 0 12 2a3 3 0 0 0-2.82 2H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1h-2v1H8V6h1.18A3 3 0 0 0 12 8a3 3 0 0 0 2.82-2H16v3h2V6a2 2 0 0 0-2-2Z"/>
             <path d="M20 8h-6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2Z"/>
           </svg>
@@ -332,27 +315,83 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("copyInput").onclick=()=>navigator.clipboard.writeText(src.value);
 
-  async function copySvgToClipboard(svgText){
-    const svgBlob=new Blob([svgText],{type:"image/svg+xml"});
-    try{
-      await navigator.clipboard.write([new ClipboardItem({"image/svg+xml":svgBlob})]);
-    }catch(e){
-      await navigator.clipboard.writeText(svgText);
-    }
+  function forceSvgPxSize(svgText, pxW, pxH){
+    const w = Math.max(1, Math.round(pxW));
+    const h = Math.max(1, Math.round(pxH));
+    if(svgText.indexOf("<svg") === -1) return svgText;
+    svgText = svgText.replace(/<svg\b([^>]*)>/, (m, a) => {
+      let attrs = a;
+
+      if(!/\bxmlns=/.test(attrs)) attrs += ' xmlns="http://www.w3.org/2000/svg"';
+      if(!/\bxmlns:xlink=/.test(attrs)) attrs += ' xmlns:xlink="http://www.w3.org/1999/xlink"';
+
+      if(/\bwidth=/.test(attrs)) attrs = attrs.replace(/\bwidth="[^"]*"/, `width="${w}"`);
+      else attrs += ` width="${w}"`;
+
+      if(/\bheight=/.test(attrs)) attrs = attrs.replace(/\bheight="[^"]*"/, `height="${h}"`);
+      else attrs += ` height="${h}"`;
+
+      return `<svg${attrs}>`;
+    });
+    return svgText;
   }
 
-  document.getElementById("copyOutput").onclick=async()=>{
-    if(err.style.display==="block")return;
+  function svgToPngBlob(svgText, scale){
+    return new Promise((resolve, reject) => {
+      const blob = new Blob([svgText], { type: "image/svg+xml" });
+      const url = URL.createObjectURL(blob);
+      const img = new Image();
+
+      img.onload = () => {
+        try{
+          const w = Math.max(1, img.naturalWidth || img.width || 1);
+          const h = Math.max(1, img.naturalHeight || img.height || 1);
+          const s = Math.max(1, scale);
+
+          const canvas = document.createElement("canvas");
+          canvas.width = w * s;
+          canvas.height = h * s;
+
+          const ctx = canvas.getContext("2d");
+          ctx.setTransform(s,0,0,s,0,0);
+          ctx.fillStyle = "#fff";
+          ctx.fillRect(0,0,w,h);
+          ctx.drawImage(img,0,0);
+
+          URL.revokeObjectURL(url);
+          canvas.toBlob(b => b ? resolve(b) : reject(new Error("toBlob failed")), "image/png");
+        }catch(e){
+          URL.revokeObjectURL(url);
+          reject(e);
+        }
+      };
+
+      img.onerror = (e) => { URL.revokeObjectURL(url); reject(e); };
+      img.src = url;
+    });
+  }
+
+  document.getElementById("copyOutput").onclick = async () => {
+    if(err.style.display==="block") return;
+
     let svg="";
     try{
-      svg=katex.renderToString(src.value,{
+      svg = katex.renderToString(src.value,{
         displayMode:mode.value==="display",
         output:"svg",
         throwOnError:true,
         trust:false
       });
-    }catch(e){return}
-    await copySvgToClipboard(svg);
+    }catch(e){ return; }
+
+    const r = out.getBoundingClientRect();
+    svg = forceSvgPxSize(svg, r.width, r.height);
+
+    try{
+      const scale = Math.ceil(window.devicePixelRatio || 2);
+      const pngBlob = await svgToPngBlob(svg, scale);
+      await navigator.clipboard.write([new ClipboardItem({ "image/png": pngBlob })]);
+    }catch(e){}
   };
 
   renderNow();
