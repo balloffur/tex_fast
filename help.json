@@ -458,5 +458,61 @@
   {"tex":"\\mathbb{R}\\setminus\\{0\\}","title":"R без нуля","keys":["R\\{0}","remove 0","ненулевые","исключить 0","setminus"]},
   {"tex":"\\mathbb{R}^n","title":"евклидово пространство R^n","keys":["Rn","R^n","euclidean space","евклидово"]},
   {"tex":"\\lVert x\\rVert_2","title":"евклидова норма ||x||_2","keys":["norm","L2","euclidean norm","норма","2"]},
-  {"tex":"\\lVert x\\rVert_p","title":"p-норма ||x||_p","keys":["norm","Lp","p-norm","норма","p"]}
+  {"tex":"\\lVert x\\rVert_p","title":"p-норма ||x||_p","keys":["norm","Lp","p-norm","норма","p"]},
+
+  {"tex":"\\sum\\limits_{k=1}^{n} a_k","title":"limits (пример с суммой)","keys":["limits","\\limits","sum","сумма","под над","\\sum"]},
+  {"tex":"\\lim\\limits_{x\\to 0} f(x)","title":"limits (пример с пределом)","keys":["limits","\\limits","lim","предел","под над","\\to"]},
+  
+  {"tex":"\\Delta","title":"Дельта (символ)","keys":["Delta","дельта","\\Delta","Δ","greek","греческий"]},
+  {"tex":"\\Delta f","title":"лапласиан (оператор Δ)","keys":["laplacian","лапласиан","Delta","\\Delta","operator","оператор"]},
+  
+  {"tex":"\\left[ x \\right]","title":"авторазмер квадратных скобок","keys":["left right","brackets","скобки","квадратные","[ ]"]},
+  {"tex":"\\left\\{ x \\right\\}","title":"авторазмер фигурных скобок","keys":["left right","braces","скобки","фигурные","{ }"]},
+  {"tex":"\\left\\lVert x \\right\\rVert","title":"авторазмер нормы","keys":["left right","norm","норма","\\lVert","\\rVert","||"]},
+  
+  {"tex":"\\mid","title":"вертикальная черта (mid)","keys":["mid","|","such that","такая что","условие"]},
+  {"tex":"\\middle|","title":"разделитель middle|","keys":["middle","\\middle|","|","such that","условие"]},
+  {"tex":"\\left\\{x\\in X\\mid P(x)\\right\\}","title":"множество по условию (авторазмер)","keys":["set builder","comprehension","\\mid","по условию","\\left\\right"]},
+  
+  {"tex":"\\le","title":"меньше или равно (le)","keys":["le","≤","<=","меньше равно","alias"]},
+  {"tex":"\\ge","title":"больше или равно (ge)","keys":["ge","≥",">=","больше равно","alias"]},
+  {"tex":"\\ne","title":"не равно (ne)","keys":["ne","≠","не равно","alias"]},
+  
+  {"tex":"\\subsetneq","title":"строгое подмножество","keys":["subsetneq","⊊","подмножество","строгое"]},
+  {"tex":"\\supsetneq","title":"строгое надмножество","keys":["supsetneq","⊋","надмножество","строгое"]},
+  
+  {"tex":"\\land","title":"логическое И (land)","keys":["land","∧","and","логика","и"]},
+  {"tex":"\\lor","title":"логическое ИЛИ (lor)","keys":["lor","∨","or","логика","или"]},
+  
+  {"tex":"\\implies","title":"следует (implies)","keys":["implies","⇒","логика","следует"]},
+  {"tex":"\\impliedby","title":"следует из (impliedby)","keys":["impliedby","⇐","логика","следует из"]},
+  {"tex":"\\iff","title":"тогда и только тогда (iff)","keys":["iff","⇔","эквивалентно","логика"]},
+  
+  {"tex":"\\rightarrow","title":"стрелка вправо (rightarrow)","keys":["rightarrow","→","arrow","стрелка","to"]},
+  {"tex":"\\Longrightarrow","title":"длинная стрелка (Longrightarrow)","keys":["Longrightarrow","⇒","arrow","стрелка","длинная"]},
+  
+  {"tex":"\\tbinom{n}{k}","title":"биномиальный коэффициент (tbinom)","keys":["tbinom","binom","choose","бином"]},
+  {"tex":"\\dbinom{n}{k}","title":"биномиальный коэффициент (dbinom)","keys":["dbinom","binom","choose","бином"]},
+  
+  {"tex":"\\operatorname*{arg\\,min}_{x\\in S} f(x)","title":"argmin","keys":["argmin","arg min","минимум","optimization"]},
+  {"tex":"\\operatorname*{arg\\,max}_{x\\in S} f(x)","title":"argmax","keys":["argmax","arg max","максимум","optimization"]},
+  
+  {"tex":"\\frac{\\partial^2}{\\partial x^2} f","title":"вторая частная производная","keys":["partial","second partial","\\partial","∂"]},
+  {"tex":"\\int f(x)\\,\\mathrm{d}x","title":"интеграл с \\mathrm{d}x","keys":["integral","\\int","интеграл","\\mathrm{d}x"]},
+  
+  {"tex":"e^{x}","title":"экспонента (e^x)","keys":["exp","exponential","экспонента","e^x"]},
+  {"tex":"\\mathrm{e}^{x}","title":"экспонента (\\mathrm{e}^x)","keys":["exp","exponential","экспонента","\\mathrm{e}"]},
+  
+  {"tex":"\\overset{\\mathrm{def}}{=}","title":"overset (определение)","keys":["overset","над","definition","def"]},
+  {"tex":"\\underset{x\\to 0}{\\longrightarrow}","title":"underset под знаком","keys":["underset","под","предел","x\\to0"]},
+  {"tex":"\\stackrel{?}{=}","title":"stackrel (знак вопроса)","keys":["stackrel","?","доказательство"]},
+  
+  {"tex":"\\overline{AB}","title":"отрезок AB","keys":["overline","segment","отрезок"]},
+  
+  {"tex":"\\tag{1}","title":"метка уравнения (tag)","keys":["tag","label","номер","katex"]},
+  
+  {"tex":"\\begin{align}a&=b+c\\\\d&=e+f\\end{align}","title":"align (окружение)","keys":["align","environment","выравнивание","&"]},
+  {"tex":"\\begin{gather}a=b+c\\\\d=e+f\\end{gather}","title":"gather (окружение)","keys":["gather","environment","по центру"]},
+  {"tex":"\\begin{split}a&=b+c\\\\&=d\\end{split}","title":"split (окружение)","keys":["split","environment","align"]}
+
 ]
