@@ -125,10 +125,13 @@
     let lastList = [];
     let lastSig = "";
 
+    const isEnabled = () => api.acEnabled !== false;
+
     function close(){
       open = false;
       sel = -1;
       lastList = [];
+      lastSig = "";
       box.style.display = "none";
       box.innerHTML = "";
     }
@@ -136,42 +139,42 @@
     function render(list){
       box.innerHTML = "";
       if (!list.length) { close(); return; }
-    
+
       const hint = document.createElement("div");
       hint.className = "ac-hint";
       hint.textContent = "↑↓ выбрать • Enter/Tab вставить • Esc закрыть";
       box.appendChild(hint);
-    
+
       for (let i = 0; i < list.length; i++) {
         const it = list[i];
         const row = document.createElement("div");
         row.className = "ac-row" + (i === sel ? " sel" : "");
-    
+
         const t = document.createElement("div");
         t.className = "ac-tex";
         t.textContent = it.tex || "";
-    
+
         const s = document.createElement("div");
         s.className = "ac-title";
         s.textContent = it.title || "";
-    
+
         row.appendChild(t);
         row.appendChild(s);
-    
+
         row.addEventListener("mousedown", (ev) => {
           ev.preventDefault();
           apply(i);
         });
-    
+
         box.appendChild(row);
       }
-    
+
       open = true;
       box.style.display = "block";
     }
 
-
     function apply(i){
+      if (!isEnabled()) { close(); return; }
       if (!lastList.length) return;
       const it = lastList[Math.max(0, Math.min(i, lastList.length - 1))];
       if (!it || !it.tex) return;
@@ -190,6 +193,8 @@
     }
 
     function update(){
+      if (!isEnabled()) { close(); return; }
+
       const h = api.getHelp();
       if (!h.loaded || !Array.isArray(h.data) || !h.data.length) { close(); return; }
       if (!idx || idx.length !== h.data.length) idx = buildIndex(h.data);
@@ -221,6 +226,8 @@
     });
 
     src.addEventListener("keydown", (e) => {
+      if (!isEnabled()) return;
+
       if (!open) {
         if (e.key === "ArrowDown" || e.key === "ArrowUp") update();
       }
@@ -239,6 +246,12 @@
 
     const onHelp = () => update();
     window.addEventListener("texfast:helpLoaded", onHelp);
+
+    const onToggle = () => {
+      if (!isEnabled()) close();
+      else update();
+    };
+    window.addEventListener("texfast:acToggle", onToggle);
 
     update();
   }
