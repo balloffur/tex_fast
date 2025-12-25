@@ -136,39 +136,40 @@
     function render(list){
       box.innerHTML = "";
       if (!list.length) { close(); return; }
-
+    
       const hint = document.createElement("div");
       hint.className = "ac-hint";
       hint.textContent = "↑↓ выбрать • Enter/Tab вставить • Esc закрыть";
       box.appendChild(hint);
-
+    
       for (let i = 0; i < list.length; i++) {
         const it = list[i];
         const row = document.createElement("div");
         row.className = "ac-row" + (i === sel ? " sel" : "");
-
+    
         const t = document.createElement("div");
         t.className = "ac-tex";
         t.textContent = it.tex || "";
-
+    
         const s = document.createElement("div");
         s.className = "ac-title";
         s.textContent = it.title || "";
-
+    
         row.appendChild(t);
         row.appendChild(s);
-
+    
         row.addEventListener("mousedown", (ev) => {
           ev.preventDefault();
           apply(i);
         });
-
+    
         box.appendChild(row);
       }
-
+    
       open = true;
-      box.style.display = "";
+      box.style.display = "block";
     }
+
 
     function apply(i){
       if (!lastList.length) return;
