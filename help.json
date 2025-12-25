@@ -366,5 +366,92 @@
   {"tex":"\\Phi","title":"Phi (заглавная)","keys":["greek","греческий","Phi","фи","\\Phi","Φ"]},
   {"tex":"X","title":"Chi (заглавная)","keys":["greek","греческий","Chi","хи","X"]},
   {"tex":"\\Psi","title":"Psi (заглавная)","keys":["greek","греческий","Psi","пси","\\Psi","Ψ"]},
-  {"tex":"\\Omega","title":"Omega (заглавная)","keys":["greek","греческий","Omega","омега","\\Omega","Ω"]}
+  {"tex":"\\Omega","title":"Omega (заглавная)","keys":["greek","греческий","Omega","омега","\\Omega","Ω"]},
+  
+  {"tex":"\\mathbb{N}","title":"натуральные числа","keys":["math object","set","numbers","натуральные","N","ℕ","mathbb"]},
+  {"tex":"\\mathbb{N}_0","title":"натуральные с нулём","keys":["math object","set","numbers","натуральные","с нулём","N0","ℕ0"]},
+  {"tex":"\\mathbb{Z}","title":"целые числа","keys":["math object","set","numbers","целые","Z","ℤ","mathbb"]},
+  {"tex":"\\mathbb{Z}_{\\ge 0}","title":"неотрицательные целые","keys":["math object","set","numbers","целые","неотрицательные","Z>=0","Z_{>=0}"]},
+  {"tex":"\\mathbb{Z}_{>0}","title":"положительные целые","keys":["math object","set","numbers","целые","положительные","Z>0","Z_{>0}"]},
+
+  {"tex":"\\mathbb{Q}","title":"рациональные числа","keys":["math object","set","numbers","рациональные","Q","ℚ","mathbb"]},
+  {"tex":"\\mathbb{Q}_{\\ge 0}","title":"неотрицательные рациональные","keys":["math object","set","numbers","рациональные","Q>=0","Q_{>=0}"]},
+  {"tex":"\\mathbb{Q}_{>0}","title":"положительные рациональные","keys":["math object","set","numbers","рациональные","Q>0","Q_{>0}"]},
+
+  {"tex":"\\mathbb{R}","title":"вещественные числа","keys":["math object","set","numbers","вещественные","R","ℝ","mathbb"]},
+  {"tex":"\\mathbb{R}_{\\ge 0}","title":"неотрицательные вещественные","keys":["math object","set","numbers","вещественные","R>=0","R_{>=0}","неотрицательные"]},
+  {"tex":"\\mathbb{R}_{>0}","title":"положительные вещественные","keys":["math object","set","numbers","вещественные","R>0","R_{>0}","положительные"]},
+  {"tex":"\\mathbb{R}_{<0}","title":"отрицательные вещественные","keys":["math object","set","numbers","вещественные","R<0","R_{<0}","отрицательные"]},
+
+  {"tex":"\\mathbb{C}","title":"комплексные числа","keys":["math object","set","numbers","комплексные","C","ℂ","mathbb"]},
+  {"tex":"\\mathbb{C}^{\\times}","title":"ненулевые комплексные (мультипликативная группа)","keys":["math object","set","numbers","C*","C^x","C^times","ненулевые","мультипликативная группа"]},
+
+  {"tex":"\\mathbb{F}_p","title":"конечное поле F_p","keys":["math object","field","finite field","Fp","F_p","конечное поле","простое p"]},
+  {"tex":"\\mathbb{F}_{q}","title":"конечное поле F_q","keys":["math object","field","finite field","Fq","F_q","конечное поле","q"]},
+
+  {"tex":"\\langle S\\rangle","title":"подгруппа, порождённая S","keys":["group","generated subgroup","порожденная","<S>","langle S rangle"]},
+  {"tex":"\\langle g\\rangle","title":"циклическая подгруппа <g>","keys":["group","cyclic","циклическая","<g>","generated"]},
+
+  {"tex":"G","title":"группа (обозначение)","keys":["group","группа","G","object"]},
+  {"tex":"\\left(G,\\cdot\\right)","title":"группа (G, ·)","keys":["group","группа","binary operation","(G,·)","operation"]},
+  {"tex":"\\left(G,+\\right)","title":"абелева группа (G, +)","keys":["group","abelian group","абелева","(G,+)"]},
+  {"tex":"H\\le G","title":"подгруппа H ≤ G","keys":["group","subgroup","подгруппа","≤","H<=G"]},
+  {"tex":"N\\trianglelefteq G","title":"нормальная подгруппа N ◁ G","keys":["group","normal subgroup","нормальная","trianglelefteq","◁"]},
+  {"tex":"G/N","title":"фактор-группа G/N","keys":["group","quotient group","фактор","G mod N","G/N"]},
+
+  {"tex":"\\mathbb{Z}_n","title":"циклическая группа/кольцо по модулю n (Z_n)","keys":["Zn","Z_n","mod n","по модулю","cyclic","group","ring"]},
+  {"tex":"\\left(\\mathbb{Z}/n\\mathbb{Z}\\right)","title":"Z/nZ","keys":["Zn","quotient","Z/nZ","по модулю","фактор"]},
+
+  {"tex":"R","title":"кольцо (обозначение)","keys":["ring","кольцо","R","object"]},
+  {"tex":"\\left(R,+,\\cdot\\right)","title":"кольцо (R, +, ·)","keys":["ring","кольцо","(R,+,·)","operations"]},
+  {"tex":"R^\\times","title":"группа обратимых элементов (единицы) R^×","keys":["ring","units","invertible","единицы","R^times","R*"]},
+  {"tex":"I\\trianglelefteq R","title":"идеал I ◁ R","keys":["ring","ideal","идеал","trianglelefteq","◁"]},
+  {"tex":"R/I","title":"фактор-кольцо R/I","keys":["ring","quotient ring","фактор","R/I"]},
+
+  {"tex":"K","title":"поле (обозначение)","keys":["field","поле","K","object"]},
+  {"tex":"\\left(K,+,\\cdot\\right)","title":"поле (K, +, ·)","keys":["field","поле","(K,+,·)","operations"]},
+  {"tex":"\\operatorname{char} K","title":"характеристика поля char K","keys":["field","characteristic","характеристика","char"]},
+
+  {"tex":"V","title":"векторное пространство (обозначение)","keys":["vector space","векторное пространство","V","object"]},
+  {"tex":"\\left(V,+\\right)","title":"аддитивная группа пространства (V, +)","keys":["vector space","additive group","(V,+)"]},
+  {"tex":"\\dim V","title":"размерность dim V","keys":["vector space","dimension","размерность","dim"]},
+  {"tex":"\\operatorname{span}\\{v_1,\\dots,v_k\\}","title":"линейная оболочка span{...}","keys":["vector space","span","линейная оболочка","порожденное","span"]},
+  {"tex":"V^*","title":"двойственное пространство V*","keys":["vector space","dual","двойственное","V*"]},
+
+  {"tex":"A","title":"алгебра (обозначение)","keys":["algebra","алгебра","A","object"]},
+  {"tex":"A\\text{-}\\mathrm{mod}","title":"категория A-модулей (шаблон)","keys":["module","category","A-mod","модули","категория"]},
+  {"tex":"\\mathfrak{g}","title":"алгебра Ли g (шаблон)","keys":["Lie algebra","алгебра Ли","frak g","\\mathfrak{g}"]},
+
+  {"tex":"\\operatorname{Hom}(A,B)","title":"множество гомоморфизмов Hom(A,B)","keys":["hom","Hom","morphism","гомоморфизм"]},
+  {"tex":"\\operatorname{End}(V)","title":"эндоморфизмы End(V)","keys":["End","endomorphism","эндо","End(V)"]},
+  {"tex":"\\operatorname{Aut}(X)","title":"автоморфизмы Aut(X)","keys":["Aut","automorphism","авто","Aut(X)"]},
+  {"tex":"\\ker\\varphi","title":"ядро ker φ","keys":["kernel","ker","ядро"]},
+  {"tex":"\\operatorname{im}\\varphi","title":"образ im φ","keys":["image","im","образ"]},
+  {"tex":"\\operatorname{coker}\\varphi","title":"коядро coker φ","keys":["cokernel","coker","коядро"]},
+
+  {"tex":"\\mathrm{GL}_n(K)","title":"общая линейная группа GL_n(K)","keys":["GLn","general linear group","линейная группа","GL_n(K)"]},
+  {"tex":"\\mathrm{SL}_n(K)","title":"специальная линейная группа SL_n(K)","keys":["SLn","special linear group","SL_n(K)"]},
+  {"tex":"\\mathrm{O}(n)","title":"ортогональная группа O(n)","keys":["O(n)","orthogonal group","ортогональная"]},
+  {"tex":"\\mathrm{SO}(n)","title":"специальная ортогональная SO(n)","keys":["SO(n)","special orthogonal","SO"]},
+  {"tex":"\\mathrm{U}(n)","title":"унитарная группа U(n)","keys":["U(n)","unitary group","унитарная"]},
+  {"tex":"\\mathrm{SU}(n)","title":"специальная унитарная SU(n)","keys":["SU(n)","special unitary","SU"]},
+
+  {"tex":"S_n","title":"симметрическая группа S_n","keys":["Sn","symmetric group","перестановки","S_n"]},
+  {"tex":"A_n","title":"альтернирующая группа A_n","keys":["An","alternating group","четные перестановки","A_n"]},
+
+  {"tex":"\\mathrm{Mat}_{m\\times n}(K)","title":"матрицы m×n над K","keys":["matrices","Mat","m×n","Mat_{m×n}(K)","матрицы"]},
+  {"tex":"K[x]","title":"кольцо многочленов K[x]","keys":["polynomial ring","K[x]","многочлены","кольцо многочленов"]},
+  {"tex":"K(x)","title":"поле рациональных функций K(x)","keys":["rational functions","K(x)","рациональные функции","поле"]},
+
+  {"tex":"\\mathcal{P}(X)","title":"булеан (множество подмножеств) P(X)","keys":["power set","P(X)","булеан","подмножества","\\mathcal{P}"]},
+  {"tex":"X\\times Y","title":"декартово произведение X×Y","keys":["cartesian product","product","X×Y","декартово"]},
+  {"tex":"X\\to Y","title":"отображение f: X→Y (стрелка-шаблон)","keys":["function","map","arrow","отображение","X->Y"]},
+  {"tex":"f\\colon X\\to Y","title":"функция f: X→Y","keys":["function","map","f: X->Y","отображение","colon"]},
+  {"tex":"f\\colon X\\to Y,\\; x\\mapsto f(x)","title":"задание отображения (x ↦ f(x))","keys":["function","mapsto","definition","x->","↦","отображение"]},
+
+  {"tex":"\\{x\\in X\\mid P(x)\\}","title":"множество по условию {x∈X | P(x)}","keys":["set builder","comprehension","such that","|","mid","по условию"]},
+  {"tex":"\\mathbb{R}\\setminus\\{0\\}","title":"R без нуля","keys":["R\\{0}","remove 0","ненулевые","исключить 0","setminus"]},
+  {"tex":"\\mathbb{R}^n","title":"евклидово пространство R^n","keys":["Rn","R^n","euclidean space","евклидово"]},
+  {"tex":"\\lVert x\\rVert_2","title":"евклидова норма ||x||_2","keys":["norm","L2","euclidean norm","норма","2"]},
+  {"tex":"\\lVert x\\rVert_p","title":"p-норма ||x||_p","keys":["norm","Lp","p-norm","норма","p"]}
 ]
