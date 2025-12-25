@@ -84,6 +84,33 @@
     .clipbtn:hover{background:#fff}
     .clipbtn:active{transform:translateY(1px)}
     .clipicon{width:20px;height:20px;fill:currentColor;opacity:.85}
+
+    /* Autocomplete */
+    .ac{
+      position:absolute;
+      left:0; right:0;
+      top:14px;
+      transform:translateY(100%);
+      margin-top:8px;
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:10px;
+      box-shadow:0 8px 24px rgba(0,0,0,.12);
+      max-height:260px;
+      overflow:auto;
+      z-index:5;
+      display:none;
+    }
+    .ac-row{
+      padding:8px 10px;
+      border-radius:8px;
+      cursor:pointer;
+    }
+    .ac-row:hover{background:#efefef}
+    .ac-row.sel{background:rgba(0,0,0,.08)}
+    .ac-tex{font:13px var(--mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .ac-title{font:12px var(--font);opacity:.75;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .ac-hint{padding:8px 10px;font:12px var(--mono);opacity:.65}
   </style>
 </head>
 <body>
@@ -93,7 +120,7 @@
     <div class="card">
       <h2>Input</h2>
 
-      <div class="fieldwrap">
+      <div class="fieldwrap" id="srcWrap">
         <button id="copyInput" class="clipbtn" type="button" aria-label="Copy TeX">
           <svg viewBox="0 0 24 24" class="clipicon" aria-hidden="true">
             <path d="M16 4h-1.18A3 3 0 0 0 12 2a3 3 0 0 0-2.82 2H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1h-2v1H8V6h1.18A3 3 0 0 0 12 8a3 3 0 0 0 2.82-2H16v3h2V6a2 2 0 0 0-2-2Z"/>
@@ -102,6 +129,8 @@
         </button>
 
         <textarea id="src">\frac{a^2+b^2}{c}</textarea>
+
+        <div id="ac" class="ac" aria-label="Autocomplete"></div>
       </div>
 
       <div class="row">
@@ -156,6 +185,7 @@
 
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/mhchem.min.js"></script>
+<script defer src="./autocomplete.js"></script>
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
@@ -191,6 +221,13 @@ document.addEventListener("DOMContentLoaded", () => {
     schedule();
   }
 
+  function replaceRange(a,b,tex){
+    src.value = src.value.slice(0,a)+tex+src.value.slice(b);
+    src.selectionStart = src.selectionEnd = a+tex.length;
+    src.focus();
+    schedule();
+  }
+
   document.querySelectorAll("#helpBase .help-item")
     .forEach(el=>el.onclick=()=>insertTex(el.dataset.tex||""));
 
@@ -214,7 +251,7 @@ document.addEventListener("DOMContentLoaded", () => {
     helpResults.appendChild(d);
   }
 
-  fetch("./help.json")
+  fetch("./help.json", { cache: "force-cache" })
     .then(r=>r.json())
     .then(d=>{helpData=Array.isArray(d)?d:[];helpLoaded=true})
     .catch(()=>{helpLoaded=false});
@@ -250,6 +287,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }catch(e){
       showErr(e);
     }
+  };
+
+  window.TEXFAST_API = {
+    getHelp: () => ({ loaded: helpLoaded, data: helpData }),
+    insertTex,
+    replaceRange,
+    src,
+    acEl: document.getElementById("ac"),
+    schedule
   };
 
   renderNow();
