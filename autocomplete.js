@@ -244,14 +244,8 @@
       close();
     });
 
-    const onHelp = () => update();
-    window.addEventListener("texfast:helpLoaded", onHelp);
-
-    const onToggle = () => {
-      if (!isEnabled()) close();
-      else update();
-    };
-    window.addEventListener("texfast:acToggle", onToggle);
+    window.addEventListener("texfast:helpLoaded", () => update());
+    window.addEventListener("texfast:acToggle", () => { if (!isEnabled()) close(); else update(); });
 
     update();
   }
