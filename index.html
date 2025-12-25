@@ -21,7 +21,6 @@
     *{box-sizing:border-box}
     body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font)}
     .wrap{max-width:var(--max);margin:0 auto;padding:20px}
-    .header{padding:16px;background:var(--panel);border:1px solid var(--border);border-radius:var(--r);margin-bottom:var(--gap)}
     .grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
     @media(max-width:900px){.grid{grid-template-columns:1fr}}
     .card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);padding:16px}
@@ -45,8 +44,22 @@
     .help-item:hover{background:#dddddd}
     .help-overlay-title{padding:3px 6px 6px;border-bottom:1px solid #d0d0d0;margin-bottom:4px;position:sticky;top:0;background:#f3f3f3}
     .help-status{color:#666;padding:6px}
-    .doc-links a{color:inherit}
-    .doc-links code{font-family:var(--mono)}
+
+    .docbar{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:10px 12px;
+      margin-top:14px;
+      background:var(--panel);
+      border:1px solid var(--border);
+      border-radius:var(--r);
+      font:13px var(--mono);
+      overflow:auto;
+      white-space:nowrap;
+    }
+    .docbar a{color:inherit;text-decoration:underline}
+    .docbar .sep{opacity:.6}
   </style>
 </head>
 <body>
@@ -80,6 +93,7 @@
         </div>
       </div>
     </div>
+
     <div class="card">
       <h2>Вывод</h2>
       <div id="out" class="out"></div>
@@ -87,28 +101,12 @@
     </div>
   </div>
 
-  <div class="card doc-links" style="margin-top:14px">
-    <h2>Документация KaTeX</h2>
-    <div style="font-size:13px;line-height:1.5">
-      <div>
-        <a href="https://katex.org/docs/supported.html" target="_blank" rel="noopener">
-          KaTeX Supported Functions
-        </a>
-        <div style="color:#666">
-          Список того, что реально поддерживается в KaTeX (KaTeX ≠ LaTeX 100%).
-        </div>
-      </div>
-      <div style="margin-top:10px">
-        <a href="https://katex.org/docs/supported.html#mhchem" target="_blank" rel="noopener">
-          KaTeX mhchem
-        </a>
-        <div style="color:#666">
-          Синтаксис химии: <code>\ce{}</code>, реакции, ионы.
-        </div>
-      </div>
-    </div>
+  <div class="docbar">
+    <span>Docs:</span>
+    <a href="https://katex.org/docs/supported.html" target="_blank" rel="noopener">Supported</a>
+    <span class="sep">|</span>
+    <a href="https://katex.org/docs/supported.html#mhchem" target="_blank" rel="noopener">mhchem</a>
   </div>
-
 </div>
 
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
