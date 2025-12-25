@@ -142,7 +142,7 @@
 
       const hint = document.createElement("div");
       hint.className = "ac-hint";
-      hint.textContent = "↑↓ выбрать • Enter/Tab вставить • Esc закрыть";
+      hint.textContent = "↑↓ выбрать • Tab вставить • Esc закрыть";
       box.appendChild(hint);
 
       for (let i = 0; i < list.length; i++) {
@@ -235,7 +235,7 @@
 
       if (e.key === "ArrowDown") { e.preventDefault(); move(+1); return; }
       if (e.key === "ArrowUp")   { e.preventDefault(); move(-1); return; }
-      if (e.key === "Enter" || e.key === "Tab") { e.preventDefault(); apply(sel >= 0 ? sel : 0); return; }
+      if (e.key === "Tab") { e.preventDefault(); apply(sel >= 0 ? sel : 0); return; }
       if (e.key === "Escape")    { e.preventDefault(); close(); return; }
     });
 
