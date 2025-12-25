@@ -25,7 +25,6 @@
     @media(max-width:900px){.grid{grid-template-columns:1fr}}
 
     .card{
-      position:relative;
       background:var(--panel);
       border:1px solid var(--border);
       border-radius:var(--r);
@@ -145,10 +144,15 @@
     .docbar a{color:inherit;text-decoration:underline}
     .docbar .sep{opacity:.6}
 
+    .fieldwrap{
+      position:relative;
+      padding-top:46px;
+    }
+
     .clipbtn{
       position:absolute;
-      top:14px;
-      right:14px;
+      top:8px;
+      right:8px;
       width:36px;
       height:36px;
       padding:0;
@@ -158,6 +162,7 @@
       border-radius:10px;
       background:#ffffff;
       cursor:pointer;
+      z-index:2;
     }
 
     .clipbtn:hover{background:#fff}
@@ -172,14 +177,16 @@
     <div class="card">
       <h2>Input</h2>
 
-      <button id="copyInput" class="clipbtn" type="button" aria-label="Copy TeX">
-        <svg viewBox="0 0 24 24" class="clipicon">
-          <path d="M16 4h-1.18A3 3 0 0 0 12 2a3 3 0 0 0-2.82 2H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1h-2v1H8V6h1.18A3 3 0 0 0 12 8a3 3 0 0 0 2.82-2H16v3h2V6a2 2 0 0 0-2-2Z"/>
-          <path d="M20 8h-6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2Z"/>
-        </svg>
-      </button>
+      <div class="fieldwrap">
+        <button id="copyInput" class="clipbtn" type="button" aria-label="Copy TeX">
+          <svg viewBox="0 0 24 24" class="clipicon">
+            <path d="M16 4h-1.18A3 3 0 0 0 12 2a3 3 0 0 0-2.82 2H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1h-2v1H8V6h1.18A3 3 0 0 0 12 8a3 3 0 0 0 2.82-2H16v3h2V6a2 2 0 0 0-2-2Z"/>
+            <path d="M20 8h-6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2Z"/>
+          </svg>
+        </button>
 
-      <textarea id="src">\frac{a^2+b^2}{c}</textarea>
+        <textarea id="src">\frac{a^2+b^2}{c}</textarea>
+      </div>
 
       <div class="row">
         <select id="mode">
@@ -214,14 +221,17 @@
     <div class="card">
       <h2>Output</h2>
 
-      <button id="copyOutput" class="clipbtn" type="button" aria-label="Copy PNG">
-        <svg viewBox="0 0 24 24" class="clipicon">
-          <path d="M16 4h-1.18A3 3 0 0 0 12 2a3 3 0 0 0-2.82 2H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1h-2v1H8V6h1.18A3 3 0 0 0 12 8a3 3 0 0 0 2.82-2H16v3h2V6a2 2 0 0 0-2-2Z"/>
-          <path d="M20 8h-6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2Z"/>
-        </svg>
-      </button>
+      <div class="fieldwrap">
+        <button id="copyOutput" class="clipbtn" type="button" aria-label="Copy PNG">
+          <svg viewBox="0 0 24 24" class="clipicon">
+            <path d="M16 4h-1.18A3 3 0 0 0 12 2a3 3 0 0 0-2.82 2H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1h-2v1H8V6h1.18A3 3 0 0 0 12 8a3 3 0 0 0 2.82-2H16v3h2V6a2 2 0 0 0-2-2Z"/>
+            <path d="M20 8h-6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2Z"/>
+          </svg>
+        </button>
 
-      <div id="out" class="out"></div>
+        <div id="out" class="out"></div>
+      </div>
+
       <div id="err" class="err"></div>
     </div>
 
@@ -240,6 +250,7 @@
 <script defer src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.min.js"></script>
 
 <script>
+document.addEventListener("DOMContentLoaded", () => {
   const src=document.getElementById("src"),out=document.getElementById("out"),err=document.getElementById("err"),
         mode=document.getElementById("mode"),clearBtn=document.getElementById("clear");
   let t=0;
@@ -329,6 +340,7 @@
   };
 
   renderNow();
+});
 </script>
 </body>
 </html>
