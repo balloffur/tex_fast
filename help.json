@@ -312,7 +312,7 @@
   {"tex":"\\ce{(g)}","title":"газ (g)","keys":["chemistry","химия","mhchem","ce","gas","g"]},
   {"tex":"\\ce{CuSO4*5H2O}","title":"кристаллогидрат (звёздочка)","keys":["chemistry","химия","mhchem","ce","hydrate","*"]},
 
-  {"tex":"\^{3}_{2}\ce{He}","title":"изотоп","keys":["chemistry","ядерная","изотоп","химия","mhchem","ce","hydrate","*"]},
+  {"tex":"\\ce{^{3}_{2}He}","title":"изотоп","keys":["chemistry","ядерная","изотоп","химия","mhchem","ce","hydrate","*"]},
 
   
   {"tex":"\\alpha","title":"alpha","keys":["greek","греческий","alpha","альфа","\\alpha","α"]},
