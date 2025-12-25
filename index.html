@@ -9,186 +9,71 @@
 
   <style>
     :root{
-      --bg:#e5e5e5;
-      --panel:#d6d6d6;
-      --panel2:#cfcfcf;
-      --border:#bdbdbd;
-      --text:#2b2b2b;
-      --muted:#666;
-      --r:6px;
-      --gap:14px;
-      --max:1000px;
+      --bg:#e5e5e5;--panel:#d6d6d6;--panel2:#cfcfcf;--border:#bdbdbd;
+      --text:#2b2b2b;--r:6px;--gap:14px;--max:1000px;
       --font:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
-      --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+      --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Courier New",monospace;
     }
-
     *{box-sizing:border-box}
     body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font)}
     .wrap{max-width:var(--max);margin:0 auto;padding:20px}
     .header{padding:16px;background:var(--panel);border:1px solid var(--border);border-radius:var(--r);margin-bottom:var(--gap)}
     .grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
     @media(max-width:900px){.grid{grid-template-columns:1fr}}
-
     .card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);padding:16px}
     h2{margin:0 0 10px;font-size:16px;font-weight:600}
-
     textarea,select,button,input{
-      width:100%;
-      border:1px solid var(--border);
-      border-radius:var(--r);
-      background:var(--panel2);
-      color:var(--text);
-      padding:10px 12px;
-      font:14px var(--mono);
-      outline:0;
+      width:100%;border:1px solid var(--border);border-radius:var(--r);
+      background:var(--panel2);color:var(--text);padding:10px 12px;font:14px var(--mono)
     }
     textarea{min-height:200px;resize:vertical}
-
-    .row{display:flex;gap:10px;margin-top:10px}
-    .row>*{flex:1}
-
-    .out{
-      background:#fff;
-      border:1px solid var(--border);
-      border-radius:var(--r);
-      padding:12px;
-      min-height:200px;
-      overflow:auto;
-      font-size:1.3em;
-    }
-
-    .err{
-      margin-top:10px;
-      padding:10px 12px;
-      border-radius:var(--r);
-      border:1px solid var(--border);
-      background:var(--panel2);
-      font:12px var(--mono);
-      color:#3a1f1f;
-      white-space:pre-wrap;
-      display:none;
-    }
-
-    .help{
-      margin-top:12px;
-      padding:12px;
-      background:#ececec;
-      border:1px solid var(--border);
-      border-radius:var(--r);
-      font:12px var(--mono);
-      color:#333;
-    }
+    .row{display:flex;gap:10px;margin-top:10px}.row>*{flex:1}
+    .out{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:12px;min-height:200px;overflow:auto;font-size:1.3em}
+    .err{margin-top:10px;padding:10px 12px;border-radius:var(--r);border:1px solid var(--border);
+      background:var(--panel2);font:12px var(--mono);color:#3a1f1f;white-space:pre-wrap;display:none}
+    .help{margin-top:12px;padding:12px;background:#ececec;border:1px solid var(--border);border-radius:var(--r);font:12px var(--mono)}
     .help b{display:block;font-weight:600;font-size:13px;margin-bottom:6px}
-
-    .help-search{
-      height:30px;
-      padding:6px 8px;
-      border-radius:4px;
-      border:1px solid var(--border);
-      background:#fff;
-      font:12px var(--mono);
-      color:#333;
-      margin:6px 0 10px;
-    }
-    .help-search::placeholder{color:#777}
-
-    .help-stack{
-      position:relative;
-      min-height:170px;
-      border:1px solid #c8c8c8;
-      background:#f3f3f3;
-      border-radius:4px;
-      padding:6px;
-    }
+    .help-search{height:30px;padding:6px 8px;border-radius:4px;border:1px solid var(--border);background:#fff;margin:6px 0 10px}
+    .help-stack{position:relative;min-height:170px;border:1px solid #c8c8c8;background:#f3f3f3;border-radius:4px;padding:6px}
     .help-pane{display:flex;flex-direction:column;gap:4px}
-    .help-pane.overlay{
-      position:absolute;
-      inset:6px;
-      border-radius:4px;
-      background:#f3f3f3;
-      overflow:auto;
-    }
-
-    .help-item{
-      font:12px var(--mono);
-      padding:3px 6px;
-      border-radius:4px;
-      cursor:pointer;
-      user-select:none;
-    }
+    .help-pane.overlay{position:absolute;inset:6px;border-radius:4px;background:#f3f3f3;overflow:auto}
+    .help-item{padding:3px 6px;border-radius:4px;cursor:pointer}
     .help-item:hover{background:#dddddd}
-
-    .help-overlay-title{
-      font:12px var(--mono);
-      color:#555;
-      padding:3px 6px 6px;
-      border-bottom:1px solid #d0d0d0;
-      margin-bottom:4px;
-      position:sticky;
-      top:0;
-      background:#f3f3f3;
-    }
-
-    .help-status{
-      font:12px var(--mono);
-      color:#666;
-      padding:6px;
-    }
+    .help-overlay-title{padding:3px 6px 6px;border-bottom:1px solid #d0d0d0;margin-bottom:4px;position:sticky;top:0;background:#f3f3f3}
+    .help-status{color:#666;padding:6px}
   </style>
 </head>
 <body>
-
 <div class="wrap">
-  <div class="header">
-    <b>LaTeX тренажёр</b>
-    <div style="font-size:13px;color:#666;margin-top:4px">
-      Ввод → KaTeX рендер. Поиск по базе: help.json (рядом с index.html).
-    </div>
-  </div>
-
+  <div class="header"><b>LaTeX тренажёр</b><div style="font-size:13px;color:#666;margin-top:4px">KaTeX + шпаргалка TeX</div></div>
   <div class="grid">
     <div class="card">
       <h2>Ввод</h2>
-
-      <textarea id="src">\\frac{a^2+b^2}{c}</textarea>
-
+      <textarea id="src">\frac{a^2+b^2}{c}</textarea>
       <div class="row">
-        <select id="mode">
-          <option value="display">display (блок)</option>
-          <option value="inline">inline (строка)</option>
-        </select>
-        <button id="clear" type="button">clear</button>
+        <select id="mode"><option value="display">display</option><option value="inline">inline</option></select>
+        <button id="clear">clear</button>
       </div>
-
       <div class="help">
-        <b>Шпаргалка по TeX/KaTeX</b>
-
-        <input id="helpSearch" class="help-search" type="text" placeholder="поиск по help.json…" autocomplete="off">
-
+        <b>Шпаргалка</b>
+        <input id="helpSearch" class="help-search" placeholder="поиск по help.json…">
         <div class="help-stack">
-          <!-- базовая справка (всегда доступна, пока поиск пустой) -->
           <div id="helpBase" class="help-pane">
-            <div class="help-item" data-tex="\\frac{a}{b}">\\frac{a}{b} — дробь</div>
-            <div class="help-item" data-tex="x^2">x^2 — степень</div>
-            <div class="help-item" data-tex="x_i">x_i — индекс</div>
-            <div class="help-item" data-tex="\\sqrt{x}">\\sqrt{x} — корень</div>
-            <div class="help-item" data-tex="\\left|x\\right|">\\left|x\\right| — модуль</div>
-            <div class="help-item" data-tex="\\int_a^b f(x)\\,dx">\\int_a^b f(x)\\,dx — интеграл</div>
-            <div class="help-item" data-tex="\\sum_{k=1}^{n} a_k">\\sum_{k=1}^{n} a_k — сумма</div>
-            <div class="help-item" data-tex="\\begin{pmatrix}a&b\\\\c&d\\end{pmatrix}">pmatrix — матрица 2×2</div>
-            <div class="help-item" data-tex="\\begin{cases}x,&x\\ge0\\\\-x,&x<0\\end{cases}">cases — кусочная</div>
-            <div class="help-item" data-tex="\\text{текст}">\\text{текст} — текст в формуле</div>
+            <div class="help-item" data-tex="\frac{a}{b}">\frac{a}{b}</div>
+            <div class="help-item" data-tex="x^2">x^2</div>
+            <div class="help-item" data-tex="x_i">x_i</div>
+            <div class="help-item" data-tex="\sqrt{x}">\sqrt{x}</div>
+            <div class="help-item" data-tex="\int_a^b f(x)\,dx">\int_a^b f(x)\,dx</div>
+            <div class="help-item" data-tex="\sum_{k=1}^{n} a_k">\sum_{k=1}^{n} a_k</div>
+            <div class="help-item" data-tex="\begin{pmatrix}a&b\\c&d\end{pmatrix}">pmatrix</div>
           </div>
-
-          <!-- overlay: показывается поверх базы, когда есть строка поиска -->
           <div id="helpOverlay" class="help-pane overlay" style="display:none">
-            <div class="help-overlay-title">Результаты из help.json</div>
+            <div class="help-overlay-title">Результаты</div>
             <div id="helpResults"></div>
           </div>
         </div>
       </div>
     </div>
-
     <div class="card">
       <h2>Вывод</h2>
       <div id="out" class="out"></div>
@@ -199,127 +84,37 @@
 
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script>
-  const src = document.getElementById("src");
-  const out = document.getElementById("out");
-  const err = document.getElementById("err");
-  const mode = document.getElementById("mode");
-  const clearBtn = document.getElementById("clear");
-
-  let t = 0;
-  function renderNow(){
-    err.style.display="none";
-    try{
-      katex.render(src.value, out, {displayMode: mode.value==="display", throwOnError:true});
-    }catch(e){
-      out.textContent="";
-      err.style.display="block";
-      err.textContent=String(e);
-    }
-  }
-  function schedule(){
-    clearTimeout(t);
-    t=setTimeout(renderNow,60);
-  }
-
-  src.addEventListener("input", schedule);
-  mode.addEventListener("change", renderNow);
-  clearBtn.addEventListener("click", ()=>{ src.value=""; renderNow(); });
-  document.addEventListener("DOMContentLoaded", renderNow);
-
-  function insertTex(tex){
-    if(!tex) return;
-    const start = src.selectionStart;
-    const end = src.selectionEnd;
-    src.value = src.value.slice(0, start) + tex + src.value.slice(end);
-    src.selectionStart = src.selectionEnd = start + tex.length;
-    src.focus();
-    schedule();
-  }
-
-  // базовые клики
-  document.querySelectorAll("#helpBase .help-item").forEach(el=>{
-    el.addEventListener("click", ()=>insertTex(el.getAttribute("data-tex")||""));
-  });
-
-  // --- help.json ---
-  const helpSearch = document.getElementById("helpSearch");
-  const helpBase = document.getElementById("helpBase");
-  const helpOverlay = document.getElementById("helpOverlay");
-  const helpResults = document.getElementById("helpResults");
-
-  let helpData = [];
-  let helpLoaded = false;
-
-  function setSearchMode(on){
-    helpBase.style.visibility = on ? "hidden" : "visible";
-    helpOverlay.style.display = on ? "block" : "none";
-  }
-
-  function showStatus(text){
-    helpResults.innerHTML = "";
-    const d = document.createElement("div");
-    d.className = "help-status";
-    d.textContent = text;
-    helpResults.appendChild(d);
-  }
-
-  fetch("./help.json", {cache:"force-cache"})
-    .then(r => {
-      if(!r.ok) throw new Error("HTTP " + r.status);
-      return r.json();
-    })
-    .then(data => {
-      helpData = Array.isArray(data) ? data : [];
-      helpLoaded = true;
-    })
-    .catch(e => {
-      helpData = [];
-      helpLoaded = false;
-    });
-
-  function renderJsonResults(q){
-    const qq = q.trim().toLowerCase();
-    if(!qq){
-      setSearchMode(false);
-      return;
-    }
-
-    setSearchMode(true);
-
-    if(!helpLoaded){
-      showStatus("help.json не загружен");
-      return;
-    }
-
-    helpResults.innerHTML = "";
-    let shown = 0;
-    const LIMIT = 120;
-
+  const src=document.getElementById("src"),out=document.getElementById("out"),err=document.getElementById("err"),
+        mode=document.getElementById("mode"),clearBtn=document.getElementById("clear");
+  let t=0;
+  function renderNow(){err.style.display="none";try{katex.render(src.value,out,{displayMode:mode.value==="display",throwOnError:true});}
+    catch(e){out.textContent="";err.style.display="block";err.textContent=String(e)}}
+  function schedule(){clearTimeout(t);t=setTimeout(renderNow,60)}
+  src.addEventListener("input",schedule);mode.addEventListener("change",renderNow);
+  clearBtn.addEventListener("click",()=>{src.value="";renderNow()});document.addEventListener("DOMContentLoaded",renderNow);
+  function insertTex(tex){const s=src.selectionStart,e=src.selectionEnd;src.value=src.value.slice(0,s)+tex+src.value.slice(e);
+    src.selectionStart=src.selectionEnd=s+tex.length;src.focus();schedule()}
+  document.querySelectorAll("#helpBase .help-item").forEach(el=>el.onclick=()=>insertTex(el.dataset.tex||""));
+  const helpSearch=document.getElementById("helpSearch"),helpBase=document.getElementById("helpBase"),
+        helpOverlay=document.getElementById("helpOverlay"),helpResults=document.getElementById("helpResults");
+  let helpData=[],helpLoaded=false;
+  function setSearchMode(on){helpBase.style.visibility=on?"hidden":"visible";helpOverlay.style.display=on?"block":"none"}
+  function showStatus(t){helpResults.innerHTML="";const d=document.createElement("div");d.className="help-status";d.textContent=t;helpResults.appendChild(d)}
+  fetch("./help.json",{cache:"force-cache"}).then(r=>r.json()).then(d=>{helpData=Array.isArray(d)?d:[];helpLoaded=true})
+    .catch(()=>{helpData=[];helpLoaded=false});
+  function renderJson(q){
+    const qq=q.trim().toLowerCase();if(!qq){setSearchMode(false);return}
+    setSearchMode(true);if(!helpLoaded){showStatus("help.json не загружен");return}
+    helpResults.innerHTML="";let n=0;
     for(const it of helpData){
-      const tex = (it.tex || "");
-      const title = (it.title || "");
-      const keys = Array.isArray(it.keys) ? it.keys.join(" ") : "";
-      const hay = (tex + " " + title + " " + keys).toLowerCase();
-      if(!hay.includes(qq)) continue;
-
-      const div = document.createElement("div");
-      div.className = "help-item";
-      div.textContent = tex + (title ? (" — " + title) : "");
-      div.addEventListener("click", ()=>insertTex(tex));
-      helpResults.appendChild(div);
-
-      shown++;
-      if(shown >= LIMIT) break;
-    }
-
-    if(shown === 0) showStatus("Ничего не найдено");
+      const hay=((it.tex||"")+" "+(it.title||"")+" "+(it.keys||[]).join(" ")).toLowerCase();
+      if(!hay.includes(qq))continue;
+      const d=document.createElement("div");d.className="help-item";d.textContent=(it.tex||"")+" — "+(it.title||"");
+      d.onclick=()=>insertTex(it.tex||"");helpResults.appendChild(d);if(++n>=120)break}
+    if(!n)showStatus("Ничего не найдено");
   }
-
-  helpSearch.addEventListener("input", e => renderJsonResults(e.target.value));
-
-  // SW (GitHub Pages / HTTPS): кэширует ресурсы, если рядом лежит sw.js
-  if ("serviceWorker" in navigator) navigator.serviceWorker.register("./sw.js");
+  helpSearch.addEventListener("input",e=>renderJson(e.target.value));
+  if("serviceWorker"in navigator)navigator.serviceWorker.register("./sw.js");
 </script>
-
 </body>
 </html>
