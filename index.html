@@ -85,6 +85,10 @@
     .clipbtn:active{transform:translateY(1px)}
     .clipicon{width:20px;height:20px;fill:currentColor;opacity:.85}
 
+    .acbtn{right:52px}
+    .acbtn.on{background:#fff}
+    .acbtn.off{opacity:.55}
+
     /* Autocomplete */
     .ac{
       position:absolute;
@@ -120,6 +124,12 @@
           <svg viewBox="0 0 24 24" class="clipicon" aria-hidden="true">
             <path d="M16 4h-1.18A3 3 0 0 0 12 2a3 3 0 0 0-2.82 2H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1h-2v1H8V6h1.18A3 3 0 0 0 12 8a3 3 0 0 0 2.82-2H16v3h2V6a2 2 0 0 0-2-2Z"/>
             <path d="M20 8h-6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2Z"/>
+          </svg>
+        </button>
+
+        <button id="toggleAc" class="clipbtn acbtn" type="button" aria-label="Toggle autocomplete">
+          <svg viewBox="0 0 24 24" class="clipicon" aria-hidden="true">
+            <path d="M3 17h2l1-3h6l1 3h2L9.5 4h-2L3 17zm3.6-5 2.4-7 2.4 7H6.6zM19 17h2v-7h-2v7zm0-9h2V6h-2v2z"/>
           </svg>
         </button>
 
@@ -185,6 +195,17 @@
 document.addEventListener("DOMContentLoaded", () => {
   const src=document.getElementById("src"),out=document.getElementById("out"),err=document.getElementById("err"),
         mode=document.getElementById("mode"),clearBtn=document.getElementById("clear");
+
+  const toggleAcBtn = document.getElementById("toggleAc");
+  let acEnabled = localStorage.getItem("texfast.acEnabled");
+  acEnabled = (acEnabled === null) ? true : (acEnabled === "1");
+
+  function paintAcBtn(){
+    toggleAcBtn.classList.toggle("on", acEnabled);
+    toggleAcBtn.classList.toggle("off", !acEnabled);
+    toggleAcBtn.title = acEnabled ? "Autocomplete: ON" : "Autocomplete: OFF";
+  }
+  paintAcBtn();
 
   function showErr(msg){
     err.style.display="block";
@@ -290,7 +311,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  toggleAcBtn.onclick = () => {
+    acEnabled = !acEnabled;
+    localStorage.setItem("texfast.acEnabled", acEnabled ? "1" : "0");
+    paintAcBtn();
+    if (window.TEXFAST_API) window.TEXFAST_API.acEnabled = acEnabled;
+    window.dispatchEvent(new Event("texfast:acToggle"));
+  };
+
   window.TEXFAST_API = {
+    acEnabled,
     getHelp: () => ({ loaded: helpLoaded, data: helpData }),
     insertTex,
     replaceRange,
