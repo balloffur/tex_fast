@@ -66,6 +66,7 @@
             <div class="help-item" data-tex="\int_a^b f(x)\,dx">\int_a^b f(x)\,dx</div>
             <div class="help-item" data-tex="\sum_{k=1}^{n} a_k">\sum_{k=1}^{n} a_k</div>
             <div class="help-item" data-tex="\begin{pmatrix}a&b\\c&d\end{pmatrix}">pmatrix</div>
+            <div class="help-item" data-tex="\ce{2H2 + O2 -> 2H2O}">\ce{2H2 + O2 -> 2H2O}</div>
           </div>
           <div id="helpOverlay" class="help-pane overlay" style="display:none">
             <div class="help-overlay-title">Результаты</div>
@@ -83,18 +84,36 @@
 </div>
 
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/mhchem.min.js"></script>
+
 <script>
   const src=document.getElementById("src"),out=document.getElementById("out"),err=document.getElementById("err"),
         mode=document.getElementById("mode"),clearBtn=document.getElementById("clear");
   let t=0;
-  function renderNow(){err.style.display="none";try{katex.render(src.value,out,{displayMode:mode.value==="display",throwOnError:true});}
-    catch(e){out.textContent="";err.style.display="block";err.textContent=String(e)}}
+
+  function renderNow(){
+    err.style.display="none";
+    try{
+      katex.render(src.value,out,{
+        displayMode:mode.value==="display",
+        throwOnError:true,
+        trust:true
+      });
+    }catch(e){
+      out.textContent="";
+      err.style.display="block";
+      err.textContent=String(e);
+    }
+  }
+
   function schedule(){clearTimeout(t);t=setTimeout(renderNow,60)}
   src.addEventListener("input",schedule);mode.addEventListener("change",renderNow);
   clearBtn.addEventListener("click",()=>{src.value="";renderNow()});document.addEventListener("DOMContentLoaded",renderNow);
+
   function insertTex(tex){const s=src.selectionStart,e=src.selectionEnd;src.value=src.value.slice(0,s)+tex+src.value.slice(e);
     src.selectionStart=src.selectionEnd=s+tex.length;src.focus();schedule()}
   document.querySelectorAll("#helpBase .help-item").forEach(el=>el.onclick=()=>insertTex(el.dataset.tex||""));
+
   const helpSearch=document.getElementById("helpSearch"),helpBase=document.getElementById("helpBase"),
         helpOverlay=document.getElementById("helpOverlay"),helpResults=document.getElementById("helpResults");
   let helpData=[],helpLoaded=false;
