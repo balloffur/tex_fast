@@ -1,0 +1,100 @@
+    :root{
+      --bg:#e5e5e5;--panel:#d6d6d6;--panel2:#cfcfcf;--border:#bdbdbd;
+      --text:#2b2b2b;--r:6px;--gap:14px;--max:1000px;
+      --font:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+      --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Courier New",monospace;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font)}
+    .wrap{max-width:var(--max);margin:0 auto;padding:20px}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
+    @media(max-width:900px){.grid{grid-template-columns:1fr}}
+
+    .card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);padding:16px}
+    h2{margin:0 0 10px;font-size:16px;font-weight:600}
+
+    textarea,select,button,input{
+      width:100%;
+      border:1px solid var(--border);
+      border-radius:var(--r);
+      padding:10px 12px;
+      font:14px var(--mono);
+      color:var(--text);
+    }
+    textarea{min-height:200px;resize:vertical;background:#fff}
+    select,button,input{background:var(--panel2)}
+
+    .row{display:flex;gap:10px;margin-top:10px}
+    .row>*{flex:1}
+
+    .out{
+      background:#fff;border:1px solid var(--border);border-radius:var(--r);
+      padding:12px;min-height:200px;overflow:auto;font-size:1.3em
+    }
+    .err{
+      margin-top:10px;padding:10px 12px;border-radius:var(--r);border:1px solid var(--border);
+      background:var(--panel2);font:12px var(--mono);color:#3a1f1f;white-space:pre-wrap;display:none
+    }
+
+    .help{margin-top:12px;padding:12px;background:#ececec;border:1px solid var(--border);border-radius:var(--r);font:12px var(--mono)}
+    .help b{display:block;font-weight:600;font-size:13px;margin-bottom:6px}
+    .help-search{height:30px;padding:6px 8px;border-radius:4px;border:1px solid var(--border);background:#fff;margin:6px 0 10px}
+    .help-stack{position:relative;min-height:170px;border:1px solid #c8c8c8;background:#f3f3f3;border-radius:4px;padding:6px}
+    .help-pane{display:flex;flex-direction:column;gap:4px}
+    .help-pane.overlay{position:absolute;inset:6px;border-radius:4px;background:#f3f3f3;overflow:auto}
+    .help-item{padding:3px 6px;border-radius:4px;cursor:pointer}
+    .help-item:hover{background:#dddddd}
+    .help-overlay-title{padding:3px 6px 6px;border-bottom:1px solid #d0d0d0;margin-bottom:4px;position:sticky;top:0;background:#f3f3f3}
+    .help-status{color:#666;padding:6px}
+
+    .docbar{
+      display:flex;align-items:center;gap:12px;padding:10px 12px;margin-top:14px;
+      background:var(--panel);border:1px solid var(--border);border-radius:var(--r);
+      font:13px var(--mono);overflow:auto;white-space:nowrap;
+    }
+    .docbar a{color:inherit;text-decoration:underline}
+    .docbar .sep{opacity:.6}
+
+    .fieldwrap{position:relative;padding-top:14px}
+
+    .clipbtn{
+      position:absolute;top:-30px;right:8px;
+      width:36px;height:36px;padding:0;
+      display:grid;place-items:center;
+      border:1px solid var(--border);
+      border-radius:10px;
+      background:var(--panel2);
+      cursor:pointer;
+      z-index:2;
+      user-select:none;
+    }
+    .clipbtn:hover{background:#fff}
+    .clipbtn:active{transform:translateY(1px)}
+    .clipicon{width:20px;height:20px;fill:currentColor;opacity:.85}
+
+    .acbtn{right:52px}
+    .acbtn.on{background:#e8f2ff}
+    .acbtn.off{background:var(--panel2)}
+    .acbtn.off .clipicon{opacity:.45}
+
+    /* Autocomplete */
+    .ac{
+      position:absolute;
+      left:0; right:0;
+      top:100%;
+      margin-top:8px;
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:10px;
+      box-shadow:0 8px 24px rgba(0,0,0,.12);
+      max-height:260px;
+      overflow:auto;
+      z-index:5;
+      display:none;
+    }
+    .ac-row{padding:8px 10px;border-radius:8px;cursor:pointer}
+    .ac-row:hover{background:#efefef}
+    .ac-row.sel{background:rgba(0,0,0,.08)}
+    .ac-tex{font:13px var(--mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .ac-title{font:12px var(--font);opacity:.75;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .ac-hint{padding:8px 10px;font:12px var(--mono);opacity:.65}
